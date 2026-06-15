@@ -2,7 +2,7 @@
 
 > Passive DNS Threat Monitoring Tool powered by Threat Intelligence feeds and Entropy-based analysis.
 
-![DNS Monitor Screenshot](result-monitor.png)
+![DNS Monitor Screenshot](Screenshot.png)
 
 ## Overview
 
