@@ -186,16 +186,19 @@ def analyze_dns_packet(packet):
                 
                 risk_score = calculate_risk_score(dns_query,subdomain , entropy_value)
 
+                status_safe = f"{current_time} [SAFE {risk_score}]"
+                status_warn = f"{current_time} [SUSPICIOUS {risk_score}]"
+                status_crit = f"{current_time} [Critical!! ALERTS]"
                 if risk_score <20 :
-                   print(f"{current_time} [SAFE {risk_score}] {ip_src:<15} -> {dns_query:<35} [reason: Normal Traffic ]")
+                   print(f" {status_safe:<38}{ip_src:<18}{dns_query:<45}[reason: Normal Traffic ]")
                 
                 elif risk_score < 60:
-                    warn_msg = f"{current_time} [SUSPICIOUS {risk_score}] {ip_src:<15} -> {dns_query:<35} [reason:High entropy domain]"
+                    warn_msg = f"{status_warn:<38}{ip_src:<18}{dns_query:<45}[reason:High entropy domain]"
                     print(f"{Fore.YELLOW}{Style.BRIGHT}{warn_msg}")                    
                     log_to_file(warn_msg)
 
                 else:
-                    Critical_alerts=(f"{current_time} [Critical!! ALERTS] {ip_src:<15} -> {dns_query:<35} [reason: found in threat intelligence feeds]")
+                    Critical_alerts=(f"{status_crit:<38}{ip_src:<18}{dns_query:<45}[reason: found in threat intelligence feeds]")
                     print(f"{Fore.RED}{Style.BRIGHT}{Critical_alerts}")
                     log_to_file(Critical_alerts)
 
@@ -225,12 +228,12 @@ def start_monitor(interface):
     Load_configuration()
     update_threat_intel()
     current_time = datetime.now().strftime("%d-%m-%Y") 
-    print("==================================================================================================================")
+    print("==================================================================================================================================")
     print("[&] Passive DNS threat monitor  system Enabled.")
     print(f"#Note Alerts will be saved automatically to [ dns_detection_{current_time}.log ] ")
-    print("==================================================================================================================")
-    print(f"{'STATUS':<33} {'SOURCE IP':<20}{'REQUESTED DOMAIN':<33}  {'ANALYSIS/REASON'}")
-    print("------------------------------------------------------------------------------------------------------------------")
+    print("==================================================================================================================================")
+    print(f"{'STATUS':<38} {'SOURCE IP':<17}{'REQUESTED DOMAIN':<45}  {'ANALYSIS/REASON'}")
+    print("---------------------------------------------------------------------------------------------------------------------------------")
 
    
     sniff_thread =threading.Thread(target=lambda:sniff(iface=interface,filter="udp port 53",prn=analyze_dns_packet,store=0),
