@@ -188,7 +188,7 @@ def analyze_dns_packet(packet):
 
                 status_safe = f"{current_time} [SAFE {risk_score}]"
                 status_warn = f"{current_time} [SUSPICIOUS {risk_score}]"
-                status_crit = f"{current_time} [Critical!! ALERTS]"
+                status_crit = f"{current_time} [Critical {risk_score}]"
                 if risk_score <20 :
                    print(f" {status_safe:<38}{ip_src:<18}{dns_query:<45}[reason: Normal Traffic ]")
                 
